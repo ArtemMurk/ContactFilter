@@ -7,10 +7,10 @@ import lombok.Data;
 public class Contact {
 
     @JsonProperty("id")
-    long id;
+    private long id;
 
     @JsonProperty("name")
-    String name;
+    private String name;
 
     public Contact(long id, String name) {
         this.id = id;

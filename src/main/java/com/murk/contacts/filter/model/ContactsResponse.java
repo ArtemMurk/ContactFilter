@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ContactsResponse {
 
     @JsonProperty("contacts")
-    Set<Contact> contacts = ConcurrentHashMap.newKeySet();
+    private Set<Contact> contacts = ConcurrentHashMap.newKeySet();
 
     public void setContact(Contact contact)
     {
