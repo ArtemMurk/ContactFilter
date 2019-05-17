@@ -22,6 +22,12 @@
         <!--Servlet-->
         <servlet-api.version>3.1.0</servlet-api.version>
 
+        <!-- SLF4J -->
+        <slf4j.version>1.7.25</slf4j.version>
+
+        <!-- Logback -->
+        <logback.version>1.2.3</logback.version>
+
     </properties>
 
     <dependencies>
@@ -78,6 +84,24 @@
             <version>${jackson-asl.version}</version>
         </dependency>
 
+        <!--Logging-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
 
     </dependencies>
 </project>
