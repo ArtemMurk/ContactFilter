@@ -1,17 +1,17 @@
 package com.murk.contacts.filter.controller;
 
 
-import com.murk.contacts.filter.model.Contact;
 import com.murk.contacts.filter.model.ContactsResponse;
 import com.murk.contacts.filter.service.ContactsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.regex.PatternSyntaxException;
 
 @RestController
 @Slf4j
@@ -32,12 +32,18 @@ public class ContactsController {
     {
         log.info("get contacts for regexp = \"{}\"",nameFilter);
 
-        ContactsResponse contactsResponse = new ContactsResponse();
+        ContactsResponse contacts = service.get(nameFilter);
 
-        contactsResponse.setContact(new Contact(1,"name 1"));
-        contactsResponse.setContact(new Contact(2,"name 2"));
-        contactsResponse.setContact(new Contact(3,"name 3"));
+        return new ResponseEntity<>(contacts,  HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(contactsResponse,  HttpStatus.OK);
+
+    @ExceptionHandler(value= { PatternSyntaxException.class})
+    private ResponseEntity<Object> notValidRegexp(RuntimeException ex, WebRequest request)
+    {
+        String badRegexp = request.getParameter("nameFilter");
+        log.error("Catch not valid regexp = \"{}\"",badRegexp);
+        return new ResponseEntity<>(
+                "Not valid regexp = "+badRegexp, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }
