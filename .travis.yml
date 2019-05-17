@@ -1,0 +1,19 @@
+language: java
+
+cache:
+  directories:
+  - $HOME/.m2
+
+jdk:
+- oraclejdk8
+
+branches:
+  only:
+  - master
+
+notifications:
+  email:
+    recipients:
+    - muravlevars@gmail.com
+    on_success: always
+    on_failure: always
