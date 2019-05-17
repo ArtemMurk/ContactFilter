@@ -1,5 +1,12 @@
 # Contact Filter
 
+| Technology     | Badge |
+|:--------------:|:-----:|
+| License        | [![LICENSE](https://img.shields.io/badge/LICENSE-Apache%202.0-blue.svg)](LICENSE) |
+| Travis CI      | [![Build Status](https://travis-ci.com/ArtemMurk/ContactFilter.svg?branch=master)](https://travis-ci.com/ArtemMurk/ContactFilter) |
+| Codacy         | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/087dde42767b4f30a572d705e1306860)](https://www.codacy.com/app/ArtemMurk/ContactFilter?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ArtemMurk/ContactFilter&amp;utm_campaign=Badge_Grade) |
+
+
 ## Project Information
 This is filter for contacts. 
 It takes regexp from REST and process it in java layer. 
