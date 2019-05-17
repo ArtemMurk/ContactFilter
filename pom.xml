@@ -7,7 +7,7 @@
     <groupId>contacts</groupId>
     <artifactId>contacts-filter</artifactId>
     <version>1.0</version>
-
+    <packaging>war</packaging>
     <properties>
         <!--Spring-->
         <spring-framework.version>4.1.5.RELEASE</spring-framework.version>
@@ -27,6 +27,13 @@
 
         <!-- Logback -->
         <logback.version>1.2.3</logback.version>
+
+        <!--Postgres-connector-->
+        <postgres-connector-java.version>9.1-901-1.jdbc4</postgres-connector-java.version>
+
+        <!--Apache CP-->
+        <apache-connection-pool.version>1.4</apache-connection-pool.version>
+
 
     </properties>
 
@@ -101,6 +108,18 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
             <version>${logback.version}</version>
+        </dependency>
+
+        <!--Postgres-->
+        <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgres-connector-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>${apache-connection-pool.version}</version>
         </dependency>
 
     </dependencies>
