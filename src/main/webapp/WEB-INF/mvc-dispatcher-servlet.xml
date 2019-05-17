@@ -11,15 +11,20 @@
     <context:annotation-config/>
     <context:component-scan base-package="com.murk.contacts.filter"/>
 
+    <util:properties id="jdbc" location="classpath:db/jdbc.properties"/>
+    <util:properties id="mapred" location="classpath:mapred/main.properties"/>
+
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />
 
     <bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
         <property name="favorPathExtension" value="false" />
     </bean>
 
-
-    <util:properties id="jdbc" location="classpath:db/jdbc.properties"/>
-
+    <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="#{mapred.slots}"/>
+        <property name="maxPoolSize" value="#{mapred.slots}"/>
+        <property name="WaitForTasksToCompleteOnShutdown" value="true"/>
+    </bean>
 
     <bean id="springDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" >
         <property name="url" value="#{jdbc.url}" />
