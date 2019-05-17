@@ -3,6 +3,8 @@ package com.murk.contacts.filter.controller;
 
 import com.murk.contacts.filter.model.ContactsResponse;
 import com.murk.contacts.filter.service.ContactsService;
+import exception.OverloadException;
+import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -25,8 +27,6 @@ public class ContactsController {
         this.service = service;
     }
 
-
-
     @RequestMapping(value = "/contacts", method = RequestMethod.GET)
     public ResponseEntity<ContactsResponse> ping(@RequestParam("nameFilter") String nameFilter)
     {
@@ -39,11 +39,28 @@ public class ContactsController {
 
 
     @ExceptionHandler(value= { PatternSyntaxException.class})
-    private ResponseEntity<Object> notValidRegexp(RuntimeException ex, WebRequest request)
+    public ResponseEntity<Object> notValidRegexp(RuntimeException ex, WebRequest request)
     {
         String badRegexp = request.getParameter("nameFilter");
-        log.error("Catch not valid regexp = \"{}\"",badRegexp);
+        log.warn("Catch not valid regexp = \"{}\"",badRegexp);
         return new ResponseEntity<>(
                 "Not valid regexp = "+badRegexp, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(value= { OverloadException.class})
+    public ResponseEntity<Object> serviceTemporalyOverload(RuntimeException ex, WebRequest request)
+    {
+        log.error(ex.getMessage());
+        return new ResponseEntity<>(
+                ex.getMessage(), new HttpHeaders(), HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
+    @ExceptionHandler(value= { InternalException.class})
+    public ResponseEntity<Object> internalException(RuntimeException ex, WebRequest request)
+    {
+        log.error(ex.getMessage());
+        return new ResponseEntity<>(
+                ex.getMessage(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }
