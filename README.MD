@@ -21,6 +21,47 @@ This project package in **war** file, you need some Servlet Container to deploy 
 Build command.
 > mvn clean package
 
+## Configuration
+
+#### Forbidden characters
+
+Before you start the program you must to encode your regex pattern **OR** allow  forbidden characters in your  servlet container.
+
+Tomcat servlet example configuration. Put this line in your 
+** catalina.properties**
+
+> tomcat.util.http.parser.HttpParser.requestTargetAllow=|{}
+
+#### DB
+
+Configure your db connection in [jdbc.properites](https://github.com/ArtemMurk/ContactFilter/blob/master/src/main/resources/db/jdbc.properties)
+
+Init database table by script [init_db.sql](https://github.com/ArtemMurk/ContactFilter/blob/master/src/main/resources/db/init_db.sql)
+
+#### MapReduce
+
+Configure main mapReduce properties in [main.properties](https://github.com/ArtemMurk/ContactFilter/blob/master/src/main/resources/mapred/main.properties)
+
+Example:
+
+Total num threads is active in module
+> slots=15
+
+Max Mapper count for one proceess
+> maxMappers=5
+
+Min Mapper count for one proceess
+> minMappers=3
+
+Batch rows in table for one mapper
+> batch=50000
+
+## API
+
+Get contacts by regexp
+
+> http://localhost:8080/hello/contacts?nameFilter={Your regexp Here}
+
 ## My Contact's 
 If you have any questions I will be happy to answer it.
  
