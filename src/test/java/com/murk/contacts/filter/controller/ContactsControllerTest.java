@@ -1,7 +1,7 @@
 package com.murk.contacts.filter.controller;
 
+import com.murk.contacts.filter.exception.OverloadException;
 import com.murk.contacts.filter.service.ContactsService;
-import exception.OverloadException;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import org.junit.Before;
 import org.junit.Test;
