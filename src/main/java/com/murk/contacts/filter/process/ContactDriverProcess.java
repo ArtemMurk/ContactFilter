@@ -4,11 +4,10 @@ import com.murk.contacts.filter.dao.ContactsDao;
 import com.murk.contacts.filter.model.ContactsResponse;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
-public class ContactDriverProcess implements Callable<ContactsResponse> {
+public class ContactDriverProcess implements Driver {
 
     private volatile boolean isInitMappers;
     private int mappers;
@@ -60,5 +59,10 @@ public class ContactDriverProcess implements Callable<ContactsResponse> {
 
     public boolean isInitMappers() {
         return isInitMappers;
+    }
+
+    @Override
+    public Pattern getPattern() {
+        return pattern;
     }
 }
