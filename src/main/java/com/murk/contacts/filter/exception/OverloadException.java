@@ -1,4 +1,4 @@
-package exception;
+package com.murk.contacts.filter.exception;
 
 
 public class OverloadException  extends RuntimeException {
