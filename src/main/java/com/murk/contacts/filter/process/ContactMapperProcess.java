@@ -45,7 +45,7 @@ public class ContactMapperProcess implements Runnable{
         try {
             do
                 {
-                    int startId = getStartId(batchNum);
+                    long startId = getStartId(batchNum);
 
                     batchContacts = dao.getBatch(startId, batchSize);
                     if (batchContacts != null && batchContacts.size()>0)
@@ -64,7 +64,7 @@ public class ContactMapperProcess implements Runnable{
 
     }
 
-    private int getStartId(int batchNum) {
+    private long getStartId(int batchNum) {
         return (mapperNumber*batchSize)+(batchNum*totalMappers*batchSize);
     }
 
