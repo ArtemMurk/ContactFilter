@@ -28,7 +28,7 @@ public class ContactsController {
     }
 
     @RequestMapping(value = "/contacts", method = RequestMethod.GET)
-    public ResponseEntity<ContactsResponse> ping(@RequestParam("nameFilter") String nameFilter)
+    public ResponseEntity<ContactsResponse> filter(@RequestParam("nameFilter") String nameFilter)
     {
         log.info("get contacts for regexp = \"{}\"",nameFilter);
 
@@ -39,7 +39,7 @@ public class ContactsController {
 
 
     @ExceptionHandler(value= { PatternSyntaxException.class})
-    public ResponseEntity<Object> notValidRegexp(RuntimeException ex, WebRequest request)
+    public ResponseEntity<Object> notValidRegexp(PatternSyntaxException ex, WebRequest request)
     {
         String badRegexp = request.getParameter("nameFilter");
         log.warn("Catch not valid regexp = \"{}\"",badRegexp);
@@ -48,7 +48,7 @@ public class ContactsController {
     }
 
     @ExceptionHandler(value= { OverloadException.class})
-    public ResponseEntity<Object> serviceTemporalyOverload(RuntimeException ex, WebRequest request)
+    public ResponseEntity<Object> serviceTemporalyOverload(OverloadException ex, WebRequest request)
     {
         log.error(ex.getMessage());
         return new ResponseEntity<>(
