@@ -1,9 +1,9 @@
 package com.murk.contacts.filter.controller;
 
 
+import com.murk.contacts.filter.exception.OverloadException;
 import com.murk.contacts.filter.model.ContactsResponse;
 import com.murk.contacts.filter.service.ContactsService;
-import exception.OverloadException;
 import jdk.nashorn.internal.runtime.regexp.joni.exception.InternalException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
