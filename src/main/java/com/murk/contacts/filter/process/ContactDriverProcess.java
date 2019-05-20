@@ -33,10 +33,10 @@ public class ContactDriverProcess implements Driver {
     public ContactsResponse call() throws Exception {
         ContactsResponse contactsResponse = new ContactsResponse();
 
-        AtomicInteger finistMapper = new AtomicInteger(0);
-        initMappers(contactsResponse,finistMapper);
+        AtomicInteger finishMapper = new AtomicInteger(0);
+        initMappers(contactsResponse,finishMapper);
 
-        while (finistMapper.get()!=mappers)
+        while (finishMapper.get()!=mappers)
         {
             Thread.sleep(100);
         }

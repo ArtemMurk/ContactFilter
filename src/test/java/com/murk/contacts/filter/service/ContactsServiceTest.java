@@ -38,9 +38,6 @@ public class ContactsServiceTest {
     @Mock
     private DriverBuilder driverBuilder;
 
-    @Mock
-    @Qualifier("mapred")
-    Properties properties;
 
     @InjectMocks
     @Autowired
