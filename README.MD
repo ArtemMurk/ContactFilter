@@ -58,9 +58,37 @@ Batch rows in table for one mapper
 
 ## API
 
-Get contacts by regexp
+Get contacts by regexp. Method GET.
 
-> http://localhost:8080/hello/contacts?nameFilter={Your regexp Here}
+> http://localhost:8080/hello/contacts?nameFilter={YourRegexpHere}
+
+## Technologies
+
+#### Serialization
+* Jackson
+
+#### DB
+* Apache Connection Pool
+* JDBC
+
+#### Logging
+* Slf4j
+* Logback
+
+#### Test
+* JUnit
+* AssertJ
+* Mockito
+* Hamcrest
+* Spring Test
+* Jsonpath
+
+#### Spring
+* Spring MVC
+
+#### Other
+* Lombok
+
 
 ## My Contact's 
 If you have any questions I will be happy to answer it.
