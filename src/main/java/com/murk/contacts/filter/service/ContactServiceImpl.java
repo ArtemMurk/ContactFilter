@@ -1,5 +1,6 @@
 package com.murk.contacts.filter.service;
 
+import com.murk.contacts.filter.dao.ContactsDao;
 import com.murk.contacts.filter.model.ContactsResponse;
 import com.murk.contacts.filter.process.ContactDriverProcess;
 import exception.OverloadException;
@@ -21,21 +22,24 @@ import java.util.regex.Pattern;
 public class ContactServiceImpl implements ContactsService {
     private int maxMappers;
     private int minMappers;
-    private int batch;
     private int totalSlots;
-
+    private int batchSize;
+    private ContactsDao dao;
     private ReentrantLock locker = new ReentrantLock();
 
     private ThreadPoolTaskExecutor slotsPool;
 
 
     @Autowired
-    public ContactServiceImpl(@Qualifier("mapred")Properties mapredProps, ThreadPoolTaskExecutor slotsPool)
+    public ContactServiceImpl(@Qualifier("mapred")Properties mapredProps, ThreadPoolTaskExecutor slotsPool, ContactsDao dao)
     {
         maxMappers = Integer.parseInt(mapredProps.getProperty("maxMappers"));
         minMappers = Integer.parseInt(mapredProps.getProperty("minMappers"));
-        batch = Integer.parseInt(mapredProps.getProperty("batch"));
         totalSlots = Integer.parseInt(mapredProps.getProperty("slots"));
+        batchSize = Integer.parseInt(mapredProps.getProperty("batch"));
+
+
+        this.dao = dao;
 
         this.slotsPool = slotsPool;
     }
@@ -92,7 +96,7 @@ public class ContactServiceImpl implements ContactsService {
                     mappers = maxMappers;
                 }
 
-            contactDriverProcess = new ContactDriverProcess(batch, mappers,pattern,slotsPool);
+            contactDriverProcess = new ContactDriverProcess(dao,mappers,pattern,slotsPool,batchSize);
         } else
             {
                 throw new OverloadException("Service temporary overload, avaliable slots = "+avaliableSlots+", but min slots need = "+minMappers+1);
