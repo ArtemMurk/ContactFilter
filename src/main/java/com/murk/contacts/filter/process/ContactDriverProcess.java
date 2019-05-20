@@ -1,5 +1,6 @@
 package com.murk.contacts.filter.process;
 
+import com.murk.contacts.filter.dao.ContactsDao;
 import com.murk.contacts.filter.model.ContactsResponse;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -10,16 +11,23 @@ import java.util.regex.Pattern;
 public class ContactDriverProcess implements Callable<ContactsResponse> {
 
     private volatile boolean isInitMappers;
-    private int batch;
     private int mappers;
+    private int batchSize;
     private Pattern pattern;
     private ThreadPoolTaskExecutor slotsPool;
+    private ContactsDao dao;
 
-    public ContactDriverProcess(int batch, int mappers, Pattern pattern, ThreadPoolTaskExecutor slotsPool) {
-        this.batch = batch;
+    public ContactDriverProcess(ContactsDao dao,
+                                int mappers,
+                                Pattern pattern,
+                                ThreadPoolTaskExecutor slotsPool,
+                                int batchSize)
+    {
         this.mappers = mappers;
         this.pattern = pattern;
         this.slotsPool= slotsPool;
+        this.dao = dao;
+        this.batchSize = batchSize;
     }
 
     @Override
@@ -39,7 +47,7 @@ public class ContactDriverProcess implements Callable<ContactsResponse> {
 
     private void initMappers(ContactsResponse contactsResponse, AtomicInteger finistMapper) {
         for (int i = 0; i < mappers; i++) {
-            ContactMapperProcess mapper= new ContactMapperProcess(pattern,contactsResponse,batch,i+1,mappers,finistMapper);
+            ContactMapperProcess mapper= new ContactMapperProcess(dao,pattern,contactsResponse,i,mappers,batchSize,finistMapper);
             slotsPool.execute(mapper);
         }
 

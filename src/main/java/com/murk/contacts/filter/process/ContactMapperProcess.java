@@ -1,36 +1,86 @@
 package com.murk.contacts.filter.process;
 
+import com.murk.contacts.filter.dao.ContactsDao;
 import com.murk.contacts.filter.model.Contact;
 import com.murk.contacts.filter.model.ContactsResponse;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class ContactMapperProcess implements Runnable{
     private Pattern pattern;
     private ContactsResponse contactsResponse;
-    private int batch;
-    private int number;
+    private int mapperNumber;
     private  int totalMappers;
-    private AtomicInteger finishMapper;
+    private  int batchSize;
+    private AtomicInteger finishMapperCounter;
+    private ContactsDao dao;
 
 
-    public ContactMapperProcess(Pattern pattern, ContactsResponse contactsResponse, int batch, int number, int totalMappers, AtomicInteger finishMapper) {
+    public ContactMapperProcess(ContactsDao dao,
+                                Pattern pattern,
+                                ContactsResponse contactsResponse,
+                                int mapperNumber,
+                                int totalMappers,
+                                int batchSize,
+                                AtomicInteger finishMapperCounter)
+    {
         this.pattern = pattern;
         this.contactsResponse = contactsResponse;
-        this.batch = batch;
-        this.number = number;
+        this.mapperNumber = mapperNumber;
         this.totalMappers = totalMappers;
-        this.finishMapper = finishMapper;
+        this.finishMapperCounter = finishMapperCounter;
+        this.dao =dao;
+        this.batchSize =batchSize;
     }
 
     @Override
     public void run() {
-        contactsResponse.setContact(new Contact(number,"yahoo hello world"));
-        finish();
+        int batchNum = 0;
+        Set<Contact> batchContacts;
+        try {
+            do
+                {
+                    int startId = getStartId(batchNum);
+
+                    batchContacts = dao.getBatch(startId, batchSize);
+                    if (batchContacts != null && batchContacts.size()>0)
+                    {
+                        filterContatcs(batchContacts);
+                    }
+
+                    batchNum++;
+                } while (batchContacts == null || batchContacts.size()>0);
+            log.info("Mapper №{} for regexp = \"{}\" is finish successful",mapperNumber,pattern.pattern());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        } finally {
+            finish();
+        }
+
     }
 
+    private int getStartId(int batchNum) {
+        return (mapperNumber*batchSize)+(batchNum*totalMappers*batchSize);
+    }
+
+    private void filterContatcs(Set<Contact> batchContacts) {
+        Set<Contact> filteredContact = new HashSet<>();
+        batchContacts.forEach(contact ->
+        {
+            if (pattern.matcher(contact.getName()).matches())
+            {
+                contactsResponse.setContact(contact);
+            }
+        });
+    }
+
+
     private void finish() {
-        finishMapper.incrementAndGet();
+        finishMapperCounter.incrementAndGet();
     }
 }
