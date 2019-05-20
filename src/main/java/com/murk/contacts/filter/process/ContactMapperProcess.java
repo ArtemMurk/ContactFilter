@@ -70,7 +70,7 @@ public class ContactMapperProcess implements Runnable{
     private void filterContatcs(Set<Contact> batchContacts) {
         batchContacts.forEach(contact ->
         {
-            if (pattern.matcher(contact.getName()).matches())
+            if (!pattern.matcher(contact.getName()).matches())
             {
                 contactsResponse.setContact(contact);
             }
