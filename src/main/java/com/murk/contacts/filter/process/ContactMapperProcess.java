@@ -5,7 +5,6 @@ import com.murk.contacts.filter.model.Contact;
 import com.murk.contacts.filter.model.ContactsResponse;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
@@ -69,7 +68,6 @@ public class ContactMapperProcess implements Runnable{
     }
 
     private void filterContatcs(Set<Contact> batchContacts) {
-        Set<Contact> filteredContact = new HashSet<>();
         batchContacts.forEach(contact ->
         {
             if (pattern.matcher(contact.getName()).matches())

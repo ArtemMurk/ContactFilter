@@ -29,8 +29,6 @@ public class ContactDriverProcessTest
     @Mock
     private ContactsDao dao;
 
-    private ContactDriverProcess driverProcess;
-
     @Before
     public void setUp(){
 
@@ -40,7 +38,7 @@ public class ContactDriverProcessTest
     @Test
     public void runSuccess() throws Exception {
         int mappers = 0;
-        driverProcess = new ContactDriverProcess(dao,mappers, Pattern.compile(GET_ALL_REGEXP ),pool,5);
+        ContactDriverProcess driverProcess = new ContactDriverProcess(dao, mappers, Pattern.compile(GET_ALL_REGEXP), pool, 5);
 
         driverProcess.call();
         verify(pool, times(mappers)).execute(Mockito.any(ContactMapperProcess.class));

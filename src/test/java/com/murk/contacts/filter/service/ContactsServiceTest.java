@@ -13,12 +13,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -60,15 +58,15 @@ public class ContactsServiceTest {
     @Test
     public void getSuccess() throws ExecutionException, InterruptedException {
 
-        Driver driver = Mockito.mock(Driver.class);
+        Driver driver = mock(Driver.class);
         when(driver.getMappers()).thenReturn(5);
         when(driver.isInitMappers()).thenReturn(true);
 
         Future<ContactsResponse> responseFuture = (Future<ContactsResponse>) Mockito.mock(Future.class);
         when(responseFuture.get()).thenReturn(ALL_CONTACTS_RESPONSE);
 
-        when(driverBuilder.build(Mockito.any())).thenReturn(driver);
-        when(pool.submit(Mockito.any(Driver.class))).thenReturn(responseFuture);
+        when(driverBuilder.build(any())).thenReturn(driver);
+        when(pool.submit(any(Driver.class))).thenReturn(responseFuture);
 
         ContactsResponse response = service.get(GET_ALL_REGEXP);
 
@@ -83,17 +81,17 @@ public class ContactsServiceTest {
     @Test(expected = InternalException.class)
     public void getFail() throws ExecutionException, InterruptedException {
 
-        Driver driver = Mockito.mock(Driver.class);
+        Driver driver = mock(Driver.class);
         when(driver.getMappers()).thenReturn(5);
         when(driver.isInitMappers()).thenReturn(true);
 
         Future<ContactsResponse> responseFuture = (Future<ContactsResponse>) Mockito.mock(Future.class);
         when(responseFuture.get()).thenThrow(new InterruptedException());
 
-        when(driverBuilder.build(Mockito.any())).thenReturn(driver);
-        when(pool.submit(Mockito.any(Driver.class))).thenReturn(responseFuture);
+        when(driverBuilder.build(any())).thenReturn(driver);
+        when(pool.submit(any(Driver.class))).thenReturn(responseFuture);
 
-        ContactsResponse response = service.get(GET_ALL_REGEXP);
+        service.get(GET_ALL_REGEXP);
 
     }
 }

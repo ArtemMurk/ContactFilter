@@ -75,7 +75,7 @@ public class ContactsControllerTest {
                 .andExpect(jsonPath("$",is("Not valid regexp = "+NOT_VALID_REGEXP)));
     }
 
-    @org.junit.Test
+    @Test
     public void serviceTemporalyOverload() throws Exception {
         String overloadMessage = "overloadMessage";
 

@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -54,7 +53,7 @@ public class DriverBuilderTest {
     public void overload()
     {
         when(pool.getActiveCount()).thenReturn(Integer.MAX_VALUE);
-        Driver response = builder.build(Pattern.compile(GET_ALL_REGEXP));
+        builder.build(Pattern.compile(GET_ALL_REGEXP));
 
     }
 }
